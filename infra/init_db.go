@@ -9,6 +9,8 @@ import (
 	"gorm.io/gorm"
 )
 
+var db *gorm.DB
+
 func InitDB() *gorm.DB {
 	dbPath := "./infra/db/opportunities.db"
 	logger := logger.GetLogger("db");
@@ -42,6 +44,13 @@ func InitDB() *gorm.DB {
 	if err != nil {
 		logger.Errf("failed to migrate database: %v", err)
 		panic("failed to migrate database")
+	}
+	return db
+}
+
+func GetDB() *gorm.DB {
+	if db == nil {
+		db = InitDB()
 	}
 	return db
 }

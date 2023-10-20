@@ -8,9 +8,10 @@ import (
 	"github.com/kevynfg/gopportunities/infra/repositories"
 )
 
+var dbConnection = db.GetDB()
+
 func InitRoutes(router *gin.Engine) {
-	db := db.InitDB()
-	repository := repositories.NewTechnologiesRepositorySql(db)
+	repository := repositories.NewTechnologiesRepositorySql(dbConnection)
 	technologyUsecase:= usecases.NewTechnologyUsecases(*repository)
 	technologyHandler := controllers.NewTechnologyHandler(*technologyUsecase)
 	v1 := router.Group("/api/v1")
