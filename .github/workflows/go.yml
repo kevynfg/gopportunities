@@ -28,7 +28,7 @@ jobs:
         path: |
           ${{ env.GOPATH }}/pkg/mod
           ${{ env.HOME }}/.cache/go-build
-      key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
     - name: Install dependencies
       run: |
         go get .
