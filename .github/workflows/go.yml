@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        go-version: [ '1.19', '1.20', '1.21.x' ]
+        go-version: '1.21.x'
     steps:
     - uses: actions/checkout@v3
 
@@ -26,8 +26,8 @@ jobs:
     - name: Install dependencies
       run: |
         go get .
-    - name: Build
+    - name: Build Application
       run: go build -v ./...
 
-    - name: Test
+    - name: Test Application
       run: go test -v ./...
