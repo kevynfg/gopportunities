@@ -23,8 +23,12 @@ jobs:
       uses: actions/setup-go@v4
       with:
         go-version: ${{ matrix.go-version }}
-        cache-dependency-path:  |
-          ~/go/pkg/mod/**/*
+    - uses: actions/cache@v2
+      with:
+        path: |
+          ${{ env.GOPATH }}/pkg/mod
+          ${{ env.HOME }}/.cache/go-build
+      key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
     - name: Install dependencies
       run: |
         go get .
