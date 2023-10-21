@@ -14,7 +14,8 @@ type TechnologyRepository interface {
 type Technology struct {
 	gorm.Model
 	ID  uint `gorm:"primaryKey"`
-	Name string
+	Name string `gorm:"unique"`
+	Stack uint
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
@@ -22,14 +23,21 @@ type Technology struct {
 type TechnologyResponse struct {
 	ID  uint `json:"id"`
 	Name string `json:"name"`
+	Stack uint `json:"stack"`
 }
 
 type TechnologyRequest struct {
 	Name string `json:"name"`
+	Stack uint `json:"stack"`
 }
 
-func NewTechnology(name string) *Technology {
+type OpportunityTechnology struct {
+	TechnologyId uint
+}
+
+func NewTechnology(name string, stack uint) *Technology {
 	return &Technology{
 		Name: name,
+		Stack: stack,
 	}
 }

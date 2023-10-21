@@ -14,9 +14,9 @@ func NewTechnologiesRepositorySql(db *gorm.DB) *TechnologiesRepositorySql {
 }
 
 func (r *TechnologiesRepositorySql) CreateTechnology(technology *models.Technology) (models.Technology, error) {
-	r.db.Exec("CREATE TABLE IF NOT EXISTS technologies (id INTEGER PRIMARY KEY, name TEXT)")
+	r.db.Exec("CREATE TABLE IF NOT EXISTS technologies (id INTEGER PRIMARY KEY, name TEXT, stack TEXT, created_at TIMESTAMP, updated_at TIMESTAMP)")
 	var newTechnology models.Technology
-	err := r.db.Raw("INSERT INTO technologies (name) VALUES (?) RETURNING id, name", technology.Name).Scan(&newTechnology).Error
+	err := r.db.Raw("INSERT INTO technologies (name, stack) VALUES (?, ?) RETURNING id, name, stack", technology.Name, technology.Stack).Scan(&newTechnology).Error
 	if err != nil {
 		return models.Technology{}, err
 	}

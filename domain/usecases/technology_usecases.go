@@ -13,11 +13,13 @@ type TechnologiesUsecases struct {
 
 type TechnologyInput struct {
 	Name string	`json:"name"`
+	Stack uint `json:"stack"`
 }
 
 type TechnologyOutput struct {
 	ID   uint	`json:"id"`
 	Name string	`json:"name"`
+	Stack uint `json:"stack"`
 }
 
 func NewTechnologyUsecases(repository repositories.TechnologiesRepositorySql) *TechnologiesUsecases {
@@ -25,7 +27,7 @@ func NewTechnologyUsecases(repository repositories.TechnologiesRepositorySql) *T
 }
 
 func (u *TechnologiesUsecases) Execute(input models.TechnologyRequest) (*TechnologyOutput, error) {
-	technology := models.NewTechnology(input.Name)
+	technology := models.NewTechnology(input.Name, input.Stack)
 	result, err := u.repository.CreateTechnology(technology)
 	if err != nil {
 		return nil, err
@@ -34,6 +36,7 @@ func (u *TechnologiesUsecases) Execute(input models.TechnologyRequest) (*Technol
 	return &TechnologyOutput{
 		ID:   result.ID,
 		Name: result.Name,
+		Stack: result.Stack,
 	}, nil
 }
 
@@ -48,6 +51,7 @@ func (u *TechnologiesUsecases) FindAll() ([]*TechnologyOutput, error) {
 		technologiesOutput = append(technologiesOutput, &TechnologyOutput{
 			ID:   technology.ID,
 			Name: technology.Name,
+			Stack: technology.Stack,
 		})
 	}
 
