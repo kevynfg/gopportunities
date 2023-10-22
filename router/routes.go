@@ -19,14 +19,14 @@ func InitRoutes(router *gin.Engine) {
 	opportunityHandler := factories.NewOpportunityController(*opportunityRepository)
 	v1 := router.Group("/api/v1")
 	{
-		v1.GET("/opportunities", controllers.GetOpportunitiesHandler)
+		v1.GET("/opportunities", opportunityHandler.GetAllOpportunities)
 		v1.GET("/technologies", technologyHandler.GetAllTechnologies)
 		v1.GET("/companies", companyHandler.GetAllCompanies)
 		v1.POST("/opportunity", opportunityHandler.CreateOpportunityHandler)
 		v1.POST("/technology", technologyHandler.CreateTechnologyHandler)
 		v1.POST("/company", companyHandler.CreateCompanyHandler)
-		v1.PUT("/opportunity/:id", controllers.UpdateOpportunityHandler)
-		v1.GET("/opportunities/search", controllers.SearchOpportunitiesHandler)
+		v1.PUT("/opportunity/:id", opportunityHandler.UpdateOpportunityHandler)
+		v1.GET("/opportunities/search", opportunityHandler.GetAllOpportunities)
 		v1.DELETE("/opportunity/:id", controllers.DisableOpportunityHandler)
 	}
 	router.Run()

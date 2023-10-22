@@ -9,12 +9,6 @@ type CompaniesUsecases struct {
 	repository repositories.CompaniesRepositorySql
 }
 
-type CompanyInput struct {
-	Name string	`json:"name"`
-	Startup bool `json:"startup"`
-	CreatedAt string `json:"created_at"`
-}
-
 type CompanyOutput struct {
 	ID   uint	`json:"id"`
 	Name string	`json:"name"`
@@ -27,7 +21,7 @@ func NewCompanyUsecases(repository repositories.CompaniesRepositorySql) *Compani
 }
 
 func (u *CompaniesUsecases) Execute(input models.CompanyRequest) (*CompanyOutput, error) {
-	company := models.NewCompany(input.Name, input.Startup)
+	company := models.NewCompany(&input.Name, &input.Startup)
 	result, err := u.repository.CreateCompany(company)
 	if err != nil {
 		return nil, err
@@ -35,8 +29,8 @@ func (u *CompaniesUsecases) Execute(input models.CompanyRequest) (*CompanyOutput
 
 	return &CompanyOutput{
 		ID:   result.ID,
-		Name: result.Name,
-		Startup: result.Startup,
+		Name: *result.Name,
+		Startup: *result.Startup,
 		CreatedAt: result.CreatedAt.Local().String(),
 	}, nil
 }
@@ -50,9 +44,9 @@ func (u *CompaniesUsecases) FindAll() ([]*CompanyOutput, error) {
 	for _, company := range companies {
 		companiesOutput = append(companiesOutput, &CompanyOutput{
 			ID:   company.ID,
-			Name: company.Name,
-			Startup: company.Startup,
-			CreatedAt: company.CreatedAt.Local().String(),
+			Name: *company.Name,
+			Startup: *company.Startup,
+			CreatedAt: company.CreatedAt.Local().UTC().Format("2006-01-02 15:04:05"),
 		})
 	}
 

@@ -13,36 +13,46 @@ func NewOpportunitiesUsecases(repository repositories.OpportunitiesRepositorySql
 	return &OpportunitiesUsecases{repository: repository}
 }
 
-type OpportunityInput struct {
-	Name 					string 					`json:"name"`
-	Description 	string 					`json:"description"`
-	CompanyID 		uint 						`json:"company_id"`
-	Location 			string 					`json:"location"`
-	Remote 				bool 						`json:"remote"`
-	ContractType 	string 					`json:"contract_type"`
-	Technologies 	[]*models.Opportunity_Technology				`json:"technologies"`
-	Link 					string 					`json:"link"`
-	Salary 				float64 				`json:"salary"`
-}
-
-type OpportunityOutput struct {
-	Name 					string 					`json:"name"`
-	Description 	string 					`json:"description"`
-	CompanyID 		uint 						`json:"company_id"`
-	Location 			string 					`json:"location"`
-	Remote 				bool 						`json:"remote"`
-	ContractType 	string 					`json:"contract_type"`
-	Technologies 	[]*models.Opportunity_Technology 	`json:"technologies"`
-	Link 					string 					`json:"link"`
-	Salary 				float64 				`json:"salary"`
-}
-
-func (h *OpportunitiesUsecases) CreateOpportunity(input models.OpportunityRequest) (models.Opportunity, error) {
+func (h *OpportunitiesUsecases) CreateOpportunity(input models.OpportunityRequest) (*models.Opportunity, error) {
 	opportunity := models.NewOpportunity(input)
 	result, err := h.repository.CreateOpportunity(opportunity)
 	if err != nil {
-		return models.Opportunity{}, err
+		return &models.Opportunity{}, err
+	}
+
+	return &result, nil
+}
+
+func (h *OpportunitiesUsecases) EditOpportunity(input models.Opportunity) (*models.Opportunity, error) {
+	opportunity := models.EditOpportunity(input)
+	result, err := h.repository.EditOpportunity(*opportunity)
+	if err != nil {
+		return &models.Opportunity{}, err
 	}
 
 	return result, nil
+}
+
+func (h *OpportunitiesUsecases) FindAll(limit string, offset string) ([]models.OpportunityResponse, error) {
+	opportunities, err := h.repository.FindAll(limit, offset)
+	if err != nil {
+		return nil, err
+	} 
+	var oppotunitiesOutput []models.OpportunityResponse
+	for _, opportunity := range opportunities {
+		oppotunitiesOutput = append(oppotunitiesOutput, models.OpportunityResponse{
+			ID: opportunity.ID,
+			CompanyName: opportunity.CompanyName,
+			TechnologyNames: opportunity.TechnologyNames,
+			Remote: opportunity.Remote,
+			ContractType: opportunity.ContractType,
+			Description: opportunity.Description,
+			Link: opportunity.Link,
+			Location: opportunity.Location,
+			Name: opportunity.Name,
+			Salary: opportunity.Salary,
+			CreatedAt: opportunity.CreatedAt,
+		})
+	}
+	return oppotunitiesOutput, nil
 }

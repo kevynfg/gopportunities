@@ -9,10 +9,10 @@ import (
 type Company struct {
 	gorm.Model
 	ID 	 uint `gorm:"primaryKey"`
-	Name string
-	Startup bool
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	Name *string
+	Startup *bool
+	CreatedAt *time.Time
+	UpdatedAt *time.Time
 }
 
 type CompanyResponse struct {
@@ -27,7 +27,7 @@ type CompanyRequest struct {
 	Startup bool `json:"startup"`
 }
 
-func NewCompany(name string, startup bool) *Company {
+func NewCompany(name *string, startup *bool) *Company {
 	return &Company{
 		Name: name,
 		Startup: startup,
