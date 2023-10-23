@@ -1,1 +1,1 @@
-API project to study Gin framework and gorm with Raw SQL
+project to study Gin framework and gorm with Raw SQL
