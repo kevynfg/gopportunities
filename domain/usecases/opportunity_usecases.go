@@ -13,21 +13,21 @@ func NewOpportunitiesUsecases(repository repositories.OpportunitiesRepositorySql
 	return &OpportunitiesUsecases{repository: repository}
 }
 
-func (h *OpportunitiesUsecases) CreateOpportunity(input models.OpportunityRequest) (*models.Opportunity, error) {
+func (h *OpportunitiesUsecases) CreateOpportunity(input models.OpportunityRequest) (*models.OpportunityResponse, error) {
 	opportunity := models.NewOpportunity(input)
 	result, err := h.repository.CreateOpportunity(opportunity)
 	if err != nil {
-		return &models.Opportunity{}, err
+		return &models.OpportunityResponse{}, err
 	}
 
-	return &result, nil
+	return result, nil
 }
 
-func (h *OpportunitiesUsecases) EditOpportunity(input models.Opportunity) (*models.Opportunity, error) {
+func (h *OpportunitiesUsecases) EditOpportunity(input models.Opportunity) (*models.OpportunityResponse, error) {
 	opportunity := models.EditOpportunity(input)
 	result, err := h.repository.EditOpportunity(*opportunity)
 	if err != nil {
-		return &models.Opportunity{}, err
+		return &models.OpportunityResponse{}, err
 	}
 
 	return result, nil
@@ -52,6 +52,7 @@ func (h *OpportunitiesUsecases) FindAll(limit string, offset string) ([]models.O
 			Name: opportunity.Name,
 			Salary: opportunity.Salary,
 			CreatedAt: opportunity.CreatedAt,
+			Active: opportunity.Active,
 		})
 	}
 	return oppotunitiesOutput, nil

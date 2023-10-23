@@ -25,7 +25,7 @@ func (h *OpportunityHandler) CreateOpportunityHandler(ctx *gin.Context) {
 		ctx.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
-	ctx.JSON(201, newOpportunity)
+	ctx.JSON(201, &newOpportunity)
 }
 
 func (h *OpportunityHandler) GetAllOpportunities(ctx *gin.Context) {
@@ -37,10 +37,6 @@ func (h *OpportunityHandler) GetAllOpportunities(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(200, opportunities)
-}
-
-func GetOpportunitiesHandler(ctx *gin.Context) {
-	
 }
 
 func (h *OpportunityHandler) UpdateOpportunityHandler(ctx *gin.Context) {
