@@ -1,0 +1,339 @@
+definitions:
+  httputil.HTTPError:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+    type: object
+  models.CompanyRequest:
+    properties:
+      name:
+        type: string
+      startup:
+        type: boolean
+    type: object
+  models.OpportunityRequest:
+    properties:
+      active:
+        type: boolean
+      company_id:
+        type: integer
+      contract_type:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      link:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      remote:
+        type: boolean
+      salary:
+        type: number
+      technologies:
+        items:
+          type: integer
+        type: array
+    type: object
+  models.OpportunityResponse:
+    properties:
+      active:
+        type: boolean
+      company_name:
+        type: string
+      contract_type:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      link:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      remote:
+        type: boolean
+      salary:
+        type: number
+      technology_names:
+        type: string
+    type: object
+  models.TechnologyRequest:
+    properties:
+      name:
+        type: string
+      stack:
+        type: integer
+    type: object
+  usecases.CompanyOutput:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      startup:
+        type: boolean
+    type: object
+  usecases.TechnologyOutput:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      stack:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /companies:
+    get:
+      consumes:
+      - application/json
+      description: returns all companies
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/usecases.CompanyOutput'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Gets all companies
+      tags:
+      - company
+  /company:
+    post:
+      consumes:
+      - application/json
+      description: Receives a JSON with company data and creates a new company
+      parameters:
+      - description: Add company
+        in: body
+        name: company
+        required: true
+        schema:
+          $ref: '#/definitions/models.CompanyRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/usecases.CompanyOutput'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Creates a new company
+      tags:
+      - company
+  /opportunities:
+    get:
+      consumes:
+      - application/json
+      description: Receives a query with limit and offset and returns all opportunities
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.OpportunityResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Gets all opportunities
+      tags:
+      - opportunity
+  /opportunity:
+    post:
+      consumes:
+      - application/json
+      description: Receives a JSON with opportunity data and creates a new opportunity
+      parameters:
+      - description: Add opportunity
+        in: body
+        name: opportunity
+        required: true
+        schema:
+          $ref: '#/definitions/models.OpportunityRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.OpportunityResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Creates a new opportunity
+      tags:
+      - opportunity
+  /opportunity/:id:
+    put:
+      consumes:
+      - application/json
+      description: Receives a JSON with opportunity data and creates a new opportunity
+      parameters:
+      - description: Opportunity ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update opportunity
+        in: body
+        name: opportunity
+        required: true
+        schema:
+          $ref: '#/definitions/models.OpportunityRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.OpportunityResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Updates a opportunity
+      tags:
+      - opportunity
+  /technologies:
+    get:
+      consumes:
+      - application/json
+      description: returns all technologies
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/usecases.TechnologyOutput'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Gets all technologies
+      tags:
+      - technology
+  /technology:
+    post:
+      consumes:
+      - application/json
+      description: Receives a JSON with technology data and creates a new technology
+      parameters:
+      - description: Add technology
+        in: body
+        name: technology
+        required: true
+        schema:
+          $ref: '#/definitions/models.TechnologyRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/usecases.TechnologyOutput'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Creates a new technology
+      tags:
+      - technology
+swagger: "2.0"

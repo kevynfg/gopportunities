@@ -6,6 +6,8 @@ import (
 	"github.com/kevynfg/gopportunities/factories"
 	db "github.com/kevynfg/gopportunities/infra"
 	"github.com/kevynfg/gopportunities/infra/repositories"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 var dbConnection = db.GetDB()
@@ -29,5 +31,6 @@ func InitRoutes(router *gin.Engine) {
 		v1.GET("/opportunities/search", opportunityHandler.GetAllOpportunities)
 		v1.DELETE("/opportunity/:id", controllers.DisableOpportunityHandler)
 	}
-	router.Run()
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	router.Run(":8080")
 }
