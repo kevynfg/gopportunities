@@ -1,1 +1,1 @@
-project to study Gin framework and gorm with Raw SQL
+Project to study Gin framework and gorm with Raw SQL and Swagger
